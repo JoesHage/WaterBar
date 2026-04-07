@@ -17,26 +17,29 @@ public enum WaterBarIcon {
     }
 
     private static func bundledMenuBarImage() -> NSImage? {
-        if let pngURL = Bundle.module.url(forResource: "menuBarIcon", withExtension: "png"),
-           let pngImage = NSImage(contentsOf: pngURL) {
-            pngImage.size = NSSize(width: 18, height: 18)
-            pngImage.isTemplate = true
-            return pngImage
+        let candidateURLs = [
+            Bundle.main.resourceURL?.appendingPathComponent("menuBarIcon.png"),
+            Bundle.main.resourceURL?.appendingPathComponent("menuBarIcon.pdf"),
+            Bundle.main.resourceURL?.appendingPathComponent("WaterBar_WaterBarKit.bundle/menuBarIcon.png"),
+            Bundle.main.resourceURL?.appendingPathComponent("WaterBar_WaterBarKit.bundle/menuBarIcon.pdf"),
+        ].compactMap { $0 }
+
+        for url in candidateURLs {
+            guard let image = NSImage(contentsOf: url) else {
+                continue
+            }
+
+            if url.pathExtension.lowercased() == "pdf",
+               (image.size.width > 64 || image.size.height > 64) {
+                continue
+            }
+
+            image.size = NSSize(width: 18, height: 18)
+            image.isTemplate = true
+            return image
         }
 
-        guard let pdfURL = Bundle.module.url(forResource: "menuBarIcon", withExtension: "pdf"),
-              let pdfImage = NSImage(contentsOf: pdfURL) else {
-            return nil
-        }
-
-        // Ignore full-page PDF exports; they render the actual mark too small to be visible in the menu bar.
-        guard pdfImage.size.width <= 64, pdfImage.size.height <= 64 else {
-            return nil
-        }
-
-        pdfImage.size = NSSize(width: 18, height: 18)
-        pdfImage.isTemplate = true
-        return pdfImage
+        return nil
     }
 
     private static func drawMenuBarCup(in rect: NSRect) {
