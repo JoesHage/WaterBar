@@ -18,7 +18,10 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "WaterBarKit"
+            name: "WaterBarKit",
+            resources: [
+                .process("Resources"),
+            ]
         ),
         .executableTarget(
             name: "WaterBar",

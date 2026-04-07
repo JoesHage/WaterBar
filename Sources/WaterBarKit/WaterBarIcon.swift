@@ -2,12 +2,27 @@ import AppKit
 
 public enum WaterBarIcon {
     public static func menuBarImage() -> NSImage {
+        if let bundled = bundledMenuBarImage() {
+            return bundled
+        }
+
         let size = NSSize(width: 18, height: 18)
         let image = NSImage(size: size)
         image.lockFocus()
         defer { image.unlockFocus() }
 
         drawMenuBarCup(in: NSRect(origin: .zero, size: size))
+        image.isTemplate = true
+        return image
+    }
+
+    private static func bundledMenuBarImage() -> NSImage? {
+        guard let url = Bundle.module.url(forResource: "menuBarIcon", withExtension: "pdf"),
+              let image = NSImage(contentsOf: url) else {
+            return nil
+        }
+
+        image.size = NSSize(width: 18, height: 18)
         image.isTemplate = true
         return image
     }
