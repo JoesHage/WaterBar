@@ -104,9 +104,14 @@ public final class WaterBarStore: ObservableObject {
 
     public func undoLastDrink() {
         refreshForCurrentDay()
-        guard let lastIncrementMl else { return }
-        todayRecord.totalMl = max(todayRecord.totalMl - lastIncrementMl, 0)
-        self.lastIncrementMl = nil
+        guard todayRecord.totalMl > 0 else { return }
+        let decrementMl = lastIncrementMl ?? settings.defaultIncrementMl
+        todayRecord.totalMl = max(todayRecord.totalMl - decrementMl, 0)
+        if todayRecord.totalMl == 0 {
+            lastIncrementMl = nil
+        } else {
+            lastIncrementMl = decrementMl
+        }
         persistAndRefresh()
     }
 

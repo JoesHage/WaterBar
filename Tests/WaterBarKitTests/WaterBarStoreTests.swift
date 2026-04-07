@@ -20,6 +20,11 @@ final class WaterBarStoreTests: XCTestCase {
         let store = makeStore(storage: storage, scheduler: scheduler, now: "2026-04-07T09:00:00Z")
 
         store.addDrink()
+        store.addDrink()
+        XCTAssertEqual(store.todayTotalMl, 500)
+        XCTAssertEqual(store.lastIncrementMl, 250)
+
+        store.undoLastDrink()
         XCTAssertEqual(store.todayTotalMl, 250)
         XCTAssertEqual(store.lastIncrementMl, 250)
 

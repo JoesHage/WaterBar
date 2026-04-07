@@ -16,6 +16,21 @@ public enum WaterBarIcon {
         return image
     }
 
+    public static func progressCupImage() -> NSImage? {
+        let candidateURLs = [
+            Bundle.main.resourceURL?.appendingPathComponent("menuBarIcon.png"),
+            Bundle.main.resourceURL?.appendingPathComponent("WaterBar_WaterBarKit.bundle/menuBarIcon.png"),
+        ].compactMap { $0 }
+
+        for url in candidateURLs {
+            if let image = NSImage(contentsOf: url) {
+                return image
+            }
+        }
+
+        return nil
+    }
+
     private static func bundledMenuBarImage() -> NSImage? {
         let candidateURLs = [
             Bundle.main.resourceURL?.appendingPathComponent("menuBarIcon.png"),
