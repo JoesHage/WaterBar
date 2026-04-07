@@ -34,6 +34,10 @@ mkdir -p "$APP_DIR/Contents/Resources"
 cp "$BUILD_DIR/WaterBar" "$APP_DIR/Contents/MacOS/WaterBar"
 cp "$ROOT_DIR/Support/Info.plist" "$APP_DIR/Contents/Info.plist"
 cp "$ICNS_PATH" "$APP_DIR/Contents/Resources/AppIcon.icns"
+resource_bundles=("$BUILD_DIR"/*.bundle(N))
+if (( ${#resource_bundles} > 0 )); then
+  cp -R "${resource_bundles[@]}" "$APP_DIR/Contents/Resources/"
+fi
 codesign --force --deep --sign - "$APP_DIR" >/dev/null
 
 echo "Built $APP_DIR"
