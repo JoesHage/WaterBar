@@ -1,0 +1,7 @@
+{
+  "name": "waterbar-packaging",
+  "private": true,
+  "devDependencies": {
+    "appdmg": "0.6.6"
+  }
+}

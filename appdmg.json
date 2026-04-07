@@ -1,0 +1,28 @@
+{
+  "title": "WaterBar",
+  "icon": ".dist/AppIcon.icns",
+  "background": ".dist/dmg-assets/background.png",
+  "icon-size": 112,
+  "window": {
+    "size": {
+      "width": 640,
+      "height": 400
+    }
+  },
+  "format": "UDZO",
+  "filesystem": "HFS+",
+  "contents": [
+    {
+      "x": 200,
+      "y": 235,
+      "type": "file",
+      "path": ".dist/WaterBar.app"
+    },
+    {
+      "x": 440,
+      "y": 235,
+      "type": "link",
+      "path": "/Applications"
+    }
+  ]
+}

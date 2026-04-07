@@ -17,14 +17,26 @@ public enum WaterBarIcon {
     }
 
     private static func bundledMenuBarImage() -> NSImage? {
-        guard let url = Bundle.module.url(forResource: "menuBarIcon", withExtension: "pdf"),
-              let image = NSImage(contentsOf: url) else {
+        if let pngURL = Bundle.module.url(forResource: "menuBarIcon", withExtension: "png"),
+           let pngImage = NSImage(contentsOf: pngURL) {
+            pngImage.size = NSSize(width: 18, height: 18)
+            pngImage.isTemplate = true
+            return pngImage
+        }
+
+        guard let pdfURL = Bundle.module.url(forResource: "menuBarIcon", withExtension: "pdf"),
+              let pdfImage = NSImage(contentsOf: pdfURL) else {
             return nil
         }
 
-        image.size = NSSize(width: 18, height: 18)
-        image.isTemplate = true
-        return image
+        // Ignore full-page PDF exports; they render the actual mark too small to be visible in the menu bar.
+        guard pdfImage.size.width <= 64, pdfImage.size.height <= 64 else {
+            return nil
+        }
+
+        pdfImage.size = NSSize(width: 18, height: 18)
+        pdfImage.isTemplate = true
+        return pdfImage
     }
 
     private static func drawMenuBarCup(in rect: NSRect) {
