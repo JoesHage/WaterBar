@@ -140,13 +140,16 @@ private struct CupProgressView: View {
 
     var body: some View {
         GeometryReader { geometry in
-            let size = geometry.size
+            let cupSize = CGSize(
+                width: geometry.size.width * 0.92,
+                height: geometry.size.height * 0.92
+            )
             let interiorShape = CupInteriorShape()
             let interiorRect = CGRect(
-                x: size.width * 0.23,
-                y: size.height * 0.25,
-                width: size.width * 0.54,
-                height: size.height * 0.56
+                x: cupSize.width * 0.23,
+                y: cupSize.height * 0.25,
+                width: cupSize.width * 0.54,
+                height: cupSize.height * 0.56
             )
             let fillHeight = interiorRect.height * clampedProgress
             let fillRect = CGRect(
@@ -154,12 +157,6 @@ private struct CupProgressView: View {
                 y: interiorRect.maxY - fillHeight,
                 width: interiorRect.width,
                 height: fillHeight
-            )
-            let imageInsets = EdgeInsets(
-                top: size.height * 0.02,
-                leading: size.width * 0.02,
-                bottom: size.height * 0.02,
-                trailing: size.width * 0.02
             )
 
             ZStack {
@@ -183,7 +180,7 @@ private struct CupProgressView: View {
                         .stroke(Color.primary.opacity(0.78), style: StrokeStyle(lineWidth: 2.0, lineCap: .round))
                         .frame(width: interiorRect.width * 0.96, height: 12)
                         .position(
-                            x: size.width * 0.5,
+                            x: cupSize.width * 0.5,
                             y: max(interiorRect.minY + 4, fillRect.minY + 2)
                         )
                         .clipShape(interiorShape)
@@ -194,13 +191,13 @@ private struct CupProgressView: View {
                         .resizable()
                         .interpolation(.high)
                         .aspectRatio(contentMode: .fit)
-                        .padding(imageInsets)
                 } else {
                     CupShape()
                         .stroke(Color.primary.opacity(0.8), style: StrokeStyle(lineWidth: 2.4, lineCap: .round, lineJoin: .round))
                 }
             }
-            .frame(width: size.width, height: size.height, alignment: .bottom)
+            .frame(width: cupSize.width, height: cupSize.height)
+            .position(x: geometry.size.width * 0.5, y: geometry.size.height * 0.5)
         }
         .accessibilityLabel("Water intake progress")
     }
