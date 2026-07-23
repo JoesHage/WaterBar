@@ -1,0 +1,22 @@
+name: Deploy Key Push Test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  push-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout with deploy key
+        uses: actions/checkout@v4
+        with:
+          ssh-key: ${{ secrets.ANGHAMNA_DEPLOY_KEY }}
+
+      - name: Commit and push directly to main
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          date -u > .deploy-key-test
+          git add .deploy-key-test
+          git commit -m "test: direct push to main via deploy key bypass"
+          git push
